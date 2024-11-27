@@ -27,7 +27,7 @@ const ThemeSwicher = () => {
   return (
     <button
       onClick={toogleTheme}
-      className="flex p-4 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-800"
+      className="flex p-3 items-center justify-center rounded-xl hover:bg-gray-200 dark:bg-gray-800 outline outline-1 outline-gray-400"
     >
       {theme === "dark" ? (
         <Sun className="h-4 w-4" />
