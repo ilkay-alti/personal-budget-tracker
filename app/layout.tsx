@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import TanStackProvider from "@/components/providers/TanStackProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -11,11 +12,11 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className="dark:bg-black dark:text-white">
-          <>{children}</>
-        </body>
-      </html>
+      <TanStackProvider>
+        <html lang="en">
+          <body className="dark:bg-black dark:text-white">{children}</body>
+        </html>
+      </TanStackProvider>
     </ClerkProvider>
   );
 };
