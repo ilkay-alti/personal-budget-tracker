@@ -2,7 +2,6 @@ import React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import NavbarComponent from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +13,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <ClerkProvider>
       <html lang="en">
         <body className="dark:bg-black dark:text-white">
-          <NavbarComponent />
           <>{children}</>
         </body>
       </html>
