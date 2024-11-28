@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import TanStackProvider from "@/components/providers/TanStackProvider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,11 +13,12 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <ClerkProvider>
-      <TanStackProvider>
-        <html lang="en">
+      <html lang="en">
+        <TanStackProvider>
           <body className="dark:bg-black dark:text-white">{children}</body>
-        </html>
-      </TanStackProvider>
+          <Toaster richColors position="bottom-right" />
+        </TanStackProvider>
+      </html>
     </ClerkProvider>
   );
 };
