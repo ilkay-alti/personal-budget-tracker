@@ -76,7 +76,7 @@ const CreateTransactionDialog = ({ type }: Props) => {
               <div className="flex flex-col gap-2 text-sm w-full">
                 <h3 className="font-medium text-base">Category</h3>
                 <CategoryPicker type={type} />
-                <p className="text-[#71717A]">
+                <p className="text-[#71717A] text-nowrap text-sm">
                   Select a category for this transaction
                 </p>
               </div>
@@ -95,7 +95,10 @@ const CreateTransactionDialog = ({ type }: Props) => {
             </div>
             {/* action button */}
             <div className="flex  items-center gap-2 justify-end">
-              <button className="flex items-center justify-center px-4 py-2 bg-white text-[#18181Bff]">
+              <button
+                className="flex items-center justify-center px-4 py-2 bg-white text-[#18181Bff]"
+                onClick={() => setShowDialog(false)}
+              >
                 Cancel
               </button>
               <button className="flex items-center justify-center px-4 py-2 text-white bg-[#18181Bff] rounded-lg">

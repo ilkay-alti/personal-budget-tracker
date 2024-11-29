@@ -18,11 +18,12 @@ export async function GET(req: Request) {
     return Response.json(queryParams.error, { status: 400 });
   }
 
-  // const type = queryParams.data;
+  const type = queryParams.data;
 
   const categories = await prisma.category.findMany({
     where: {
       userId: user!.id,
+      ...(type && { type }),
     },
     orderBy: {
       name: "asc",

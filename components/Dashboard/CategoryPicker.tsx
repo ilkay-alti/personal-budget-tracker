@@ -83,7 +83,10 @@ const CategoryPicker = ({ type }: Props) => {
                 className="fixed z-50 bg-white border p-6 w-[512px] flex flex-col gap-4 rounded-xl"
                 onClick={(e) => e.stopPropagation()}
               >
-                <CreateNewCategoryDialog type={type} />
+                <CreateNewCategoryDialog
+                  type={type}
+                  setIsOpenNewCategory={setIsOpenNewCategory}
+                />
               </div>
             </div>
           )}
