@@ -2,6 +2,7 @@
 
 import { TransactionType } from "@/lib/types";
 import React from "react";
+import CategoryPicker from "./CategoryPicker";
 
 interface Props {
   type: TransactionType;
@@ -11,7 +12,6 @@ const CreateTransactionDialog = ({ type }: Props) => {
 
   const [description, setDescription] = React.useState("");
   const [amount, setAmount] = React.useState(0);
-  // const [category, setCategory] = React.useState("");
   const [date, setDate] = React.useState(new Date());
 
   return (
@@ -29,9 +29,12 @@ const CreateTransactionDialog = ({ type }: Props) => {
       {showDialog && (
         <div
           className="fixed inset-0 z-0 bg-black/80 flex items-center justify-center text-[#09090B]"
-          // onClick={() => setShowDialog(false)}
+          onClick={() => setShowDialog(false)}
         >
-          <div className="fixed z-50 bg-white border p-6 w-[512px] flex flex-col gap-4 rounded-xl">
+          <div
+            className="fixed z-50 bg-white border p-6 w-[512px] flex flex-col gap-4 rounded-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 className="text-2xl font-semibold">
               Create a new{" "}
               <span
@@ -42,6 +45,7 @@ const CreateTransactionDialog = ({ type }: Props) => {
                 {type}
               </span>
             </h2>
+            {/* Description Picker */}
             <div className="flex flex-col gap-2 text-sm">
               <h3 className="font-medium text-base">Description</h3>
               <input
@@ -55,6 +59,7 @@ const CreateTransactionDialog = ({ type }: Props) => {
                 Transaction description (optional)
               </p>
             </div>
+            {/* Amount Picker */}
             <div className="flex flex-col gap-2 text-sm">
               <h3 className="font-medium text-base">Amount</h3>
               <input
@@ -67,21 +72,17 @@ const CreateTransactionDialog = ({ type }: Props) => {
               <p className="text-[#71717A]">Transaction amount (required)</p>
             </div>
             <div className="flex gap-12 items-center justify-between">
+              {/* Category Picker */}
               <div className="flex flex-col gap-2 text-sm w-full">
                 <h3 className="font-medium text-base">Category</h3>
-                <input
-                  type="string"
-                  placeholder=""
-                  value={amount}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="px-3 py-2 w-full h-10 border border-[#D1D5DB] rounded-lg"
-                />
+                <CategoryPicker type={type} />
                 <p className="text-[#71717A]">
                   Select a category for this transaction
                 </p>
               </div>
+              {/* Time Picker */}
               <div className="flex flex-col gap-2 text-sm w-full">
-                <h3 className="font-medium text-base">Amount</h3>
+                <h3 className="font-medium text-base">Transaction date</h3>
                 <input
                   type="date"
                   placeholder=""
@@ -91,6 +92,15 @@ const CreateTransactionDialog = ({ type }: Props) => {
                 />
                 <p className="text-[#71717A]">Select a date for this</p>
               </div>
+            </div>
+            {/* action button */}
+            <div className="flex  items-center gap-2 justify-end">
+              <button className="flex items-center justify-center px-4 py-2 bg-white text-[#18181Bff]">
+                Cancel
+              </button>
+              <button className="flex items-center justify-center px-4 py-2 text-white bg-[#18181Bff] rounded-lg">
+                Create
+              </button>
             </div>
           </div>
         </div>
