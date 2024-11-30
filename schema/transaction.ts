@@ -1,9 +1,9 @@
 import { z } from "zod";
 
+// Define the transaction schema
 export const CreateTransactionSchema = z.object({
-  description: z.string().optional(),
+  description: z.string().default("").optional(),
   amount: z.number().positive().multipleOf(0.01),
-  currency: z.string().optional(),
   date: z.date(),
   category: z.string(),
   type: z.enum(["income", "expense"]),

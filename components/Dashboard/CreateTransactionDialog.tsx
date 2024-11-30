@@ -1,18 +1,57 @@
 "use client";
 
 import { TransactionType } from "@/lib/types";
-import React from "react";
+import React, { useCallback } from "react";
 import CategoryPicker from "./CategoryPicker";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CreateTransaction } from "@/app/(user)/(dashboard)/_actions/transactions";
+import { toast } from "sonner";
+import { CreateTransactionSchemaType } from "@/schema/transaction";
+import { DateToUTCDate } from "@/lib/helpers";
 
 interface Props {
   type: TransactionType;
 }
+
 const CreateTransactionDialog = ({ type }: Props) => {
   const [showDialog, setShowDialog] = React.useState(false);
 
   const [description, setDescription] = React.useState("");
   const [amount, setAmount] = React.useState(0);
   const [date, setDate] = React.useState(new Date());
+  const [category, setCategory] = React.useState("");
+
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: CreateTransaction,
+    onSuccess: () => {
+      toast.success("Transaction created successfully", {
+        id: "create-transaction",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["overview"],
+      });
+
+      setShowDialog(false);
+    },
+  });
+
+  const handleCreateTransaction = useCallback(
+    (values: CreateTransactionSchemaType) => {
+      if (!values.category) {
+        toast.error("Category is required", { id: "category-error" });
+        return;
+      }
+
+      toast.loading("Creating transaction...", { id: "create-transaction" });
+      mutate({
+        ...values,
+        date: DateToUTCDate(values.date),
+      });
+    },
+    [mutate],
+  );
 
   return (
     <div>
@@ -75,7 +114,7 @@ const CreateTransactionDialog = ({ type }: Props) => {
               {/* Category Picker */}
               <div className="flex flex-col gap-2 text-sm w-full">
                 <h3 className="font-medium text-base">Category</h3>
-                <CategoryPicker type={type} />
+                <CategoryPicker type={type} setCategory={setCategory} />
                 <p className="text-[#71717A] text-nowrap text-sm">
                   Select a category for this transaction
                 </p>
@@ -101,7 +140,19 @@ const CreateTransactionDialog = ({ type }: Props) => {
               >
                 Cancel
               </button>
-              <button className="flex items-center justify-center px-4 py-2 text-white bg-[#18181Bff] rounded-lg">
+              <button
+                className="flex items-center justify-center px-4 py-2 text-white bg-[#18181Bff] rounded-lg"
+                onClick={() =>
+                  handleCreateTransaction({
+                    amount: amount,
+                    category: category,
+                    date: date,
+                    description: description,
+                    type: type,
+                  })
+                }
+                disabled={isPending}
+              >
                 Create
               </button>
             </div>

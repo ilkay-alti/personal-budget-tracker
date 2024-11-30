@@ -11,8 +11,15 @@ import { CreateCategorySchemaType } from "@/schema/categories";
 interface Props {
   type: "income" | "expense";
   setIsOpenNewCategory: React.Dispatch<React.SetStateAction<boolean>>;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const CreateNewCategoryDialog = ({ type, setIsOpenNewCategory }: Props) => {
+const CreateNewCategoryDialog = ({
+  type,
+  setIsOpenNewCategory,
+  setValue,
+  setIsOpen,
+}: Props) => {
   const [categoryName, setCategoryName] = React.useState("");
   const [categoryIcon, setCategoryIcon] = React.useState("");
   const [isEmojiPickerVisible, setIsEmojiPickerVisible] = React.useState(false);
@@ -27,6 +34,8 @@ const CreateNewCategoryDialog = ({ type, setIsOpenNewCategory }: Props) => {
       });
 
       await queryClient.invalidateQueries({ queryKey: ["categories"] });
+      setValue(data.name);
+      setIsOpen(false);
       setIsOpenNewCategory(false);
     },
     onError: (error) => {

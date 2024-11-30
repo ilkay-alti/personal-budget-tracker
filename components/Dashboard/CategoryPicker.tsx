@@ -8,27 +8,37 @@ import CreateNewCategoryDialog from "./CreateNewCategoryDialog";
 
 interface Props {
   type: TransactionType;
+  setCategory: (category: string) => void;
 }
 
-const CategoryPicker = ({ type }: Props) => {
+const CategoryPicker = ({ type, setCategory }: Props) => {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [isOpenNewCategory, setIsOpenNewCategory] = useState(false);
 
-  const categoriesQuery = useQuery({
+  const {
+    data: categories,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["categories", type],
     queryFn: () =>
       fetch(`/api/categories?type=${type}`).then((res) => res.json()),
   });
 
-  const selectedCategory = categoriesQuery.data?.find(
+  const selectedCategory = categories?.find(
     (category: Category) => category.name === value,
   );
+
   useEffect(() => {
-    console.log(categoriesQuery.data);
-    console.log(selectedCategory);
+    if (selectedCategory) {
+      setCategory(selectedCategory.name);
+    }
   }, [value]);
+
+  if (isLoading) return <div>Loading categories...</div>;
+  if (isError) return <div>Error loading categories</div>;
 
   return (
     <div>
@@ -47,8 +57,8 @@ const CategoryPicker = ({ type }: Props) => {
       </button>
       {isOpen && (
         <div className="absolute w-[207px] mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 ">
-          {/* search */}
-          <div className="flex  items-center border border-gray-300 text-[#09090B] ">
+          {/* Search */}
+          <div className="flex items-center border border-gray-300 text-[#09090B] ">
             <Search className="absolute w-4 h-4 m-2" />
             <input
               type="text"
@@ -58,7 +68,7 @@ const CategoryPicker = ({ type }: Props) => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          {/* new category */}
+          {/* New category */}
           <div
             className="px-4 py-2 group hover:bg-gray-300 cursor-pointer border-x border-b border-gray-300 text-gray-400 hover:text-[#09090B]"
             onMouseDown={() => {
@@ -86,21 +96,23 @@ const CategoryPicker = ({ type }: Props) => {
                 <CreateNewCategoryDialog
                   type={type}
                   setIsOpenNewCategory={setIsOpenNewCategory}
+                  setValue={setValue}
+                  setIsOpen={setIsOpen}
                 />
               </div>
             </div>
           )}
 
-          {/* categoryList */}
+          {/* Category List */}
           <div className="border-b border-x border-gray-300">
-            {categoriesQuery.data
+            {categories
               ?.filter((ctx: Category) =>
                 ctx.name.toLowerCase().includes(search.toLowerCase()),
               )
               .map((category: Category) => (
                 <div
                   key={category.name}
-                  className="px-4 py-2 hover:bg-gray-300 hover:text-white cursor-pointer  "
+                  className="px-4 py-2 hover:bg-gray-300 hover:text-white cursor-pointer"
                   onMouseDown={() => {
                     setValue(category.name);
                     setIsOpen(false);
