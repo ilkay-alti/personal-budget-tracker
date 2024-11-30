@@ -23,7 +23,7 @@ const NavbarComponent = () => {
 
   console.log(pathName);
   return (
-    <div className="flex h-20 px-8 justify-between outline outline-1 outline-gray-300">
+    <div className="flex h-20 px-8 justify-between ">
       <div className="flex items-center gap-3">
         <LogoComponent />
         {NavigationRoot.map((nav, i) => {

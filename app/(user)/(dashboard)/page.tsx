@@ -1,4 +1,5 @@
 import CreateTransactionDialog from "@/components/Dashboard/CreateTransactionDialog";
+import Overview from "@/components/Dashboard/Overview";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -22,8 +23,8 @@ const DashboardPage = async () => {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center p-8">
+    <div className="flex flex-col ">
+      <div className="flex justify-between items-center p-8 outline outline-1 outline-gray-300">
         <h2 className="text-4xl font-bold text-[#09090B]">
           Hello, {user.firstName} 👋
         </h2>
@@ -32,6 +33,7 @@ const DashboardPage = async () => {
           <CreateTransactionDialog type="expense" />
         </div>
       </div>
+      <Overview />
     </div>
   );
 };
