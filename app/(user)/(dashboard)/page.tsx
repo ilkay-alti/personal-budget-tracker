@@ -11,7 +11,7 @@ const DashboardPage = async () => {
     console.log("no user");
     redirect("/sing-in");
   }
-  console.log(user);
+
   const userSettings = await prisma.userSettings.findUnique({
     where: {
       userID: user.id,
